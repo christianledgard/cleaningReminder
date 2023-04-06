@@ -2,6 +2,7 @@ import requests
 import logging
 import os
 import random
+import time
 from dotenv import load_dotenv
 from apscheduler.schedulers.blocking import BlockingScheduler
 
@@ -43,6 +44,13 @@ def weekly_turns():
     message += "\nDon't forget to react to this message when you finish your task! 🧹"
     sendViaTelegram(message)
 
+def reminder():
+    message = "Friendly reminder to do your chores. Please, ignore this if you already did it."
+    sendViaTelegram(message)
+
+def firstDayOfMonth():
+    message = f"📆 Today is the first day of **{time.strftime('%B')}**.\nPlease remember to:\n- Pay the rent. \n- Settle up any debt on Splitwise."
+    sendViaTelegram(message)
     
 
 def main():
@@ -57,6 +65,8 @@ def main():
         scheduler = BlockingScheduler()
         scheduler.configure(timezone='Europe/Amsterdam')
         scheduler.add_job(weekly_turns, 'cron', day_of_week='mon', hour=9, minute=00)
+        scheduler.add_job(reminder, 'cron', day_of_week='tue-wed', hour=10, minute=00)
+        scheduler.add_job(firstDayOfMonth, 'cron', day=1, hour=8, minute=00)
 
         scheduler.start()
     except KeyboardInterrupt:
