@@ -40,7 +40,7 @@ def weekly_turns():
     message = "This week's chores: ✨\n"
     for (person, chore) in zip(people, chores):
         message += f"📌 {person} - {chore}\n"
-    message += "\n Don't forget to react to this message when you finish your task! 🧹"
+    message += "\nDon't forget to react to this message when you finish your task! 🧹"
     sendViaTelegram(message)
 
     
